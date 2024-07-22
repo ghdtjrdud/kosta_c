@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+window.onload = function(){
+	document.querySelector("#btnRead").onclick = function(){
+		let request = new XMLHttpRequest();
+		
+		request.onreadystatechange = function(){
+			if(request.readyState == 4){
+				if(request.status == 200){					
+					let arr = eval("("+request.responseText +")");
+					let table = document.createElement("table");
+					for(let i=0; i<arr.length; i++){
+						let tr = document.createElement("tr");
+						let td1 = document.createElement("td");
+						let td2 = document.createElement("td");
+						let td3 = document.createElement("td");
+						let txt1 = document.createTextNode(arr[i].dno);
+						let txt2 = document.createTextNode(arr[i].dname);
+						let txt3 = document.createTextNode(arr[i].dloc);
+						td1.appendChild(txt1);
+						td2.appendChild(txt2);
+						td3.appendChild(txt3);
+						tr.appendChild(td1);
+						tr.appendChild(td2);
+						tr.appendChild(td3);
+						table.appendChild(tr);
+					}
+					document.querySelector("#output").appendChild(table);
+				}
+			}
+		}
+		
+		
+		request.open("get", "listDept.jsp", true);
+		request.send();
+		
+	}
+}
+</script>
+</head>
+<body>
+	<textarea rows="10" cols="80"></textarea>
+	<hr>
+	<h1>Hello Kosta</h1>
+	<div id="output"></div>
+	<button id="btnRead">Ajax통신</button>	
+	<h1>Hello Kosta</h1>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$("#btnRead").click(function () {
+			$.ajax({
+				url:"listDept.jsp",
+				success:function(data)
+					let table = $("<table></table)")
+					$.each(data,function(i,dept){
+						let tr = $("<tr></tr>");
+						let td1 = $("<td></td>").html( dept.dno);
+						
+					})	
+			})
+			
+		})
+	});	
+</script>
+
+
+</head>
+<body>
+	<textarea rows="10" cols="80"></textarea>
+
+	<h1>Hello Kosta</h1>
+	<div id="output"></div>
+	<button id="btnRead">Ajax통신</button>
+	<h1>Hello Kosta</h1>
+</body>
+</html>

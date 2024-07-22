@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		let loadDept = function(){			
+			$("#output").empty();
+			$.ajax({
+				url:"listDept.jsp",				
+				success:function(data){
+					let table = $("<table></table>");
+					$.each(data, function(i,dept){
+						let tr = $("<tr></tr>");
+						let td1 = $("<td></td>").html( dept.dno );
+						let td2 = $("<td></td>").html( dept.dname );
+						let td3 = $("<td></td>").html( dept.dloc );
+						$(tr).append(td1,td2,td3);
+						$(table).append(tr);
+					});
+					$("#output").append(table);
+				}
+			});			
+		}
+		
+		
+		
+		$("#my_form").submit(function(e){
+			let dno = $("#dno").val();
+			let dname = $("#dname").val();
+			let dloc = $("#dloc").val();
+			
+			let item = {
+				dno:dno,
+				dname:dname,
+				dloc:dloc
+			};
+			
+			$.ajax({
+				url:"insertDept.jsp",
+				data:item,
+				success:function(r){
+					if(r.msg == "1"){
+						loadDept();
+					}
+				}
+			});
+			
+			//기본이벤트 제거
+			e.preventDefault();
+		});
+		
+		
+		$("#btnRead").click(function(){
+			loadDept();
+		});
+	});
+</script>
+</head>
+<body>
+	<textarea rows="10" cols="80"></textarea>
+	<hr>
+	<h1>Hello Kosta</h1>
+	<div id="output"></div>
+	<button id="btnRead">부서목록 읽어오기</button>	
+	<hr>
+	<form id="my_form" action="#">
+		<table>
+			<tr>
+				<td>부서번호</td>
+				<td><input type="text" id="dno"> </td>
+			</tr>
+			<tr>
+				<td>부서명</td>
+				<td><input type="text" id="dname"></td>
+			</tr>
+			<tr>
+				<td>부서위치</td>
+				<td><input type="text" id="dloc"></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="등록">
+					<input type="reset" value="다시입력">
+				</td>				
+			</tr>
+		</table>
+	</form>
+	<h1>Hello Kosta</h1>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
