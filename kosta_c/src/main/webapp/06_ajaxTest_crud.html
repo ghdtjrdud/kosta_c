@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.high_light{
+		background: yellow;
+	}
+	
+	.active{
+		background: pink;
+	}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#output").on("click", "tr", function(){
+			let tds = $(this).find("td");
+			$("#dno").val(  $(tds[0]).html()  );
+			$("#dname").val(  $(tds[1]).html()  );
+			$("#dloc").val(  $(tds[2]).html()  );
+			
+			$("#output tr").removeClass("active");
+			$(this).addClass("active");
+
+		});
+		
+		$("#output").on("mouseover", "tr", function(){
+			$(this).addClass("high_light");
+		});
+		
+		$("#output").on("mouseleave", "tr", function(){
+			$(this).removeClass("high_light");
+		});
+		
+		let loadDept = function(){			
+			$("#output").empty();
+			$.ajax({
+				url:"listDept.jsp",				
+				success:function(data){					
+					$.each(data, function(i,dept){
+						let tr = $("<tr></tr>");
+						let td1 = $("<td></td>").html( dept.dno );
+						let td2 = $("<td></td>").html( dept.dname );
+						let td3 = $("<td></td>").html( dept.dloc );
+						$(tr).append(td1,td2,td3);
+						$("#output").append(tr);
+					});
+				}
+			});			
+		}
+		
+		
+		
+		$("#btnDelete").click(function(e){
+			if(  confirm("정말로 삭제하시겠습니까?") == false   ){
+				//기본이벤트 제거
+				e.preventDefault();
+				return false;
+			}
+			
+			let dno = $("#dno").val();			
+			
+			let item = {
+				dno:dno
+			};
+			
+			$.ajax({
+				url:"deleteDept.jsp",
+				data:item,
+				success:function(r){
+					if(r.msg == "1"){
+						loadDept();
+					}
+				}
+			});
+			
+			//기본이벤트 제거
+			e.preventDefault();
+		});
+		$("#btnUpdate").click(function(e){
+			let dno = $("#dno").val();
+			let dname = $("#dname").val();
+			let dloc = $("#dloc").val();
+			
+			let item = {
+				dno:dno,
+				dname:dname,
+				dloc:dloc
+			};
+			
+			$.ajax({
+				url:"updateDept.jsp",
+				data:item,
+				success:function(r){
+					if(r.msg == "1"){
+						loadDept();
+					}
+				}
+			});
+			
+			//기본이벤트 제거
+			e.preventDefault();
+		});
+		
+		
+		
+		$("#btnAdd").click(function(e){
+			let dno = $("#dno").val();
+			let dname = $("#dname").val();
+			let dloc = $("#dloc").val();
+			
+			let item = {
+				dno:dno,
+				dname:dname,
+				dloc:dloc
+			};
+			
+			$.ajax({
+				url:"insertDept.jsp",
+				data:item,
+				success:function(r){
+					if(r.msg == "1"){
+						loadDept();
+					}
+				}
+			});
+			
+			//기본이벤트 제거
+			e.preventDefault();
+		});
+		
+		
+		
+		loadDept();
+		
+	});
+</script>
+</head>
+<body>
+
+	<h1>Hello Kosta</h1>
+	<table border="1" width="80%">
+		<thead>
+			<tr>
+				<th>부서번호</th>
+				<th>부서이름</th>
+				<th>부서위치</th>
+			</tr>
+		</thead>
+		<tbody id="output"></tbody>
+	</table>
+	<hr>
+	<form id="my_form" action="#">
+		<table>
+			<tr>
+				<td>부서번호</td>
+				<td><input type="text" id="dno"> </td>
+			</tr>
+			<tr>
+				<td>부서명</td>
+				<td><input type="text" id="dname"></td>
+			</tr>
+			<tr>
+				<td>부서위치</td>
+				<td><input type="text" id="dloc"></td>
+			</tr>			
+		</table>
+	</form>
+	<input id="btnAdd"  type="button" value="등록">
+	<input id="btnUpdate"  type="button" value="수정">
+	<input id="btnDelete"  type="button" value="삭제">
+	<h1>Hello Kosta</h1>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
